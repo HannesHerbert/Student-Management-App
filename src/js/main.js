@@ -10,6 +10,8 @@ import { fetchStudents } from './data.js';
 
 let students = fetchStudents();
 
+console.log(students);
+
 
 
 
