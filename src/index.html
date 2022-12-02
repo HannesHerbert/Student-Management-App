@@ -1,44 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Management</title>
-  </head>
-  <body>
-    
-    <div id="app" class="container">
-      <h1>Student Management</h1>
 
-      <label for="exampleDataList" class="form-label">Datalist example</label>
-      <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
-      <datalist id="datalistOptions">
-        <option value="San Francisco">
-        <option value="New York">
-        <option value="Seattle">
-        <option value="Los Angeles">
-        <option value="Chicago">
-      </datalist>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management</title>
+</head>
 
-      <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Accordion Item #1
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-          </div>
+<body>
+
+  <div id="app" class="container">
+    <h1>Student Management</h1>
+
+
+    <div class="btn-toolbar justify-content-between my-3" role="toolbar" aria-label="Toolbar with button groups">
+
+      <div class="input-group">
+
+        <div class="btn-group">
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+          <label class="btn btn-outline-primary" for="btnradio2">Students</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="btnradio1">Classes</label>
+
         </div>
+
+
+        <input type="select" class="ms-2 form-control" list="datalistOptions" id="exampleDataList"
+          placeholder="Type to search...">
+        <datalist id="datalistOptions">
+          <option value="San Francisco">
+          <option value="New York">
+          <option value="Seattle">
+          <option value="Los Angeles">
+          <option value="Chicago">
+        </datalist>
+
+
+
+      </div>
+
+
+
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username"
+          aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
       </div>
 
     </div>
 
-    <script type="module" src="js/main.js"></script>
-  </body>
+
+    <div class="d-flex">
+
+      <div class="accordion" id="accordionExample">
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+              aria-expanded="true" aria-controls="collapseOne">
+              Accordion Item #1
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
+              plugin
+              adds the appropriate classes that we use to style each element. These classes control the overall
+              appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom
+              CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the
+              <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              Accordion Item #2
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+            data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+              <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
+              filled with some actual content.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+              Accordion Item #3
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+            data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+              <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
+              happening here in terms of content, but just filling up the space to make it look, at least at first
+              glance,
+              a bit more representative of how this would look in a real-world application.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+
+
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
 </html>
-
-
