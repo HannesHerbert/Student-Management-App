@@ -1,5 +1,22 @@
 # Schritte (Funktionen):
 
+zuBeachten:
+    - Schüler in eine andere Klasse verschieben
+    - 
+
+0. Datenstruktur
+    - Aufteilung und Erstellung:
+        - class.js
+            - klassenname
+            - klassengröße
+            - 
+
+        - student.js
+            - ID
+            - Name
+            - classId
+            - address
+
 
 1. DOM-Struktur erstellen: 
 
@@ -12,8 +29,10 @@
     - Suchfenster
 
 
+    - Formular zum Bearbeiten und Erstellen eines neuen Studenten 
 
-    Accordion
+
+    - Accordion
 
 
 
@@ -22,7 +41,9 @@
  - 
 
 
-3. hinzufügenFunktion 
+3. Hinzufügen-Funktion
+
+4. Delete-Funktion
 
 4. funktionFunktion
 

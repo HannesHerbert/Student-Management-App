@@ -2,21 +2,27 @@ const API_BASE_URL = 'https://test.100best.guide/locations/dci-students';
 const API_STUDENT_ENDPOINT = 'student';
 
 // Bsp.: https://test.100best.guide/locations/dci-students/student?skip=10&limit=20
-async function fetchStudents(classId) {
+async function fetchStudents(limit, skip, classId) {
 
-    let reqUrl = `https://test.100best.guide/locations/dci-students/student?classId=${classId}`;
+    let response;
+    let data;
 
-    let res = await fetch(reqUrl);
+    if(limit === undefined) limit = "";
+    if(skip === undefined) skip = "";
+    if(classId === undefined) classId = "";
 
-    let body = await res.json();
 
-    if (res.ok) {
+    response = await fetch(`https://test.100best.guide/locations/dci-students/student?limit=${limit}&skip=${skip}&classId=${classId}`);
+    data = response.json();
 
-        return Promise.resolve(body);
+
+    if (response.ok) {
+
+        return Promise.resolve(data);
     
     } else {
 
-        return Promise.reject(body);
+        return Promise.reject(data);
     }
    
 }
