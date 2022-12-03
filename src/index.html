@@ -12,64 +12,57 @@
   <div id="app" class="container mt-3 rounded">
     <h1>Student Management</h1>
 
-
+    <!-- ! Container für Students/Classes Auswahl und Student-Search -->
     <div class="btn-toolbar justify-content-between  my-3" role="toolbar" aria-label="Toolbar with button groups">
-
-      <div class="input-group  ">
-
-        <div class="btn-group  ">
-
-          <input type="radio" class="btn-check " name="btnradio" id="btnradio2" autocomplete="off">
-          <label class="btn btn-outline-primary" for="btnradio2">Students</label>
-
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="btnradio1">Classes</label>
-
+        <div class="btn-group" id="view-selection">
+          <!-- Radio für Studentenansicht -->
+          <input type="radio" class="btn-check " name="btnradio" id="radio-studentview-input" autocomplete="off">
+          <label class="btn btn-outline-primary" for="radio-studentview-input">Students</label>
+          <!-- Radio für Klassenansicht -->
+          <input type="radio" class="btn-check" name="btnradio" id="radio-classview-input" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="radio-classview-input">Classes</label>
+          <!-- Input für Klassen - oder Einträge pro Seite Wahl -->
           <input type="select" class="form-control ps-2" list="datalistOptions" id="exampleDataList" placeholder="Choose a Class">
           <datalist id="datalistOptions">
-            <option value="San Francisco">
+            <!-- Wird in JS erzeugt -->
+            <!-- <option value="San Francisco">
             <option value="New York">
             <option value="Seattle">
             <option value="Los Angeles">
-            <option value="Chicago">
+            <option value="Chicago"> -->
           </datalist>
-
         </div>
-      </div>
-
-
-
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search Student" aria-label="Recipient's username"
-          aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-      </div>
-
+        <!-- Studenten-Suchbereich  -->
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search Student" aria-label="Recipient's username"
+            aria-describedby="button-addon2">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+        </div>
     </div>
-
+    <!-- Navigation für die Ansicht -->
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Klassen</li>
 
+        <li class="breadcrumb-item active" aria-current="page">Klassen</li>
         <li class="breadcrumb-item"><a href="#">Studenten</a></li>
         <li class="breadcrumb-item"><a href="#">Detailansicht</a></li>
 
       </ol>
     </nav>
 
-
+    <!-- ! Ausgabebereich -->
     <div class="d-flex">
 
       <div class="accordion w-100" id="accordionExample">
 
-        <div class="accordion-item">
+        <!-- <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
               aria-expanded="true" aria-controls="collapseOne">
               Accordion Item #1
             </button>
           </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
             data-bs-parent="#accordionExample">
             <div class="accordion-body">
               <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
@@ -114,7 +107,7 @@
               a bit more representative of how this would look in a real-world application.
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
 
@@ -122,7 +115,7 @@
 
     </div>
 
-
+    <!-- ! Pagination -->
     <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3" >
       <ul class="pagination">
         <li class="page-item">
