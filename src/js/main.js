@@ -5,7 +5,7 @@ import * as bootstrap from 'bootstrap';
 // Import our custom JS
 import { fetchStudents, addNewStudent, deleteStudent } from './data.js';
 /* -------------------------------------------------------------------------------  */
-const elClassSelectionInput = document.querySelector("#datalistOptions");
+//const elClassSelectionInput = document.querySelector("#datalistOptions");
 
 
 const elAccordion = document.querySelector("#accordionExample");
@@ -78,7 +78,7 @@ function renderClassNames() {
         elClassSelectionInput.appendChild(classOption)
     });
 }
-renderClassNames();
+//renderClassNames();
 
 
 function renderAccordionItems() {
