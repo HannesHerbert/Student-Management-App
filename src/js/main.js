@@ -8,6 +8,8 @@ import { fetchStudents, addNewStudent, deleteStudent } from './data.js';
 //const elClassSelectionInput = document.querySelector("#datalistOptions");
 
 
+
+
 const elAccordion = document.querySelector("#accordionExample");
 
 
@@ -122,6 +124,12 @@ function renderAccordionItems() {
         accordionBtn.setAttribute("aria-expanded", "true");
         accordionBtn.setAttribute("aria-controls", `collapse${index}`);
         accordionBtn.textContent = key;
+
+        //let classSizeBadge = document.createElement("span");
+        //classSizeBadge.classList.add("badge", "bg-primary", "rounded-pill", "position-absolute", "top-50", "start-60", "translate-middle");
+        //classSizeBadge.classList.add("badge", "text-bg-secondary", "float-end")
+        // classSizeBadge.textContent = value.length;
+        // accordionBtn.appendChild(classSizeBadge);
     
         accordionHeading.appendChild(accordionBtn);
         accordionItem.appendChild(accordionHeading);
@@ -134,8 +142,29 @@ function renderAccordionItems() {
     
         let accordionBody = document.createElement("div");
         accordionBody.classList.add("accordion-body");
-        accordionBody.textContent = `Number of Students: ${value.length}`;
-    
+
+        let orderedList = document.createElement("ol");
+        orderedList.classList.add("list-group", "list-group-numbered");
+
+        value.forEach(student => {
+            let listItem = document.createElement("li");
+            listItem.classList.add("list-group-item");
+
+            let btn = document.createElement("button")
+            btn.classList.add("btn", "btn-light", "text-start", "student-detail-btn");
+            btn.type = "button";
+            btn.setAttribute("data-bs-toggle","offcanvas");
+            btn.setAttribute("data-bs-target", "#staticBackdrop");
+            btn.setAttribute("aria-controls", "staticBackdrop");
+            btn.textContent = student.name;
+            btn.id = student._id;
+
+            listItem.appendChild(btn)
+
+            orderedList.appendChild(listItem);
+        });
+
+        accordionBody.appendChild(orderedList);
         accordionShowContainer.appendChild(accordionBody);
         accordionItem.appendChild(accordionShowContainer);
 
@@ -148,6 +177,48 @@ function renderAccordionItems() {
 
 
 renderAccordionItems()
+
+const elStudentDetailView = document.querySelectorAll(".student-detail-btn");
+elStudentDetailView.forEach(student => {
+    student.addEventListener("click", renderStudentDetails);
+});
+
+function renderStudentDetails(evt) {
+    const offcanvasContainer = document.querySelector("#staticBackdrop");
+
+    console.log(evt.target.id);
+
+    console.log(evt.target.innerHTML);
+
+
+    let offcanvasHeader = document.createElement("div");
+    offcanvasHeader.classList.add("offcanvas-header");
+
+    let heading = document.createElement("h5");
+    heading.classList.add("offcanvas-title");
+    heading.id = "staticBackdropLabel";
+    heading.textContent = `Student: ${evt.target.innerHTML}`
+    offcanvasHeader.appendChild(heading);
+
+    let dismissBtn = document.createElement("button");
+    dismissBtn.type = "button";
+    dismissBtn.classList.add("btn-close");
+    dismissBtn.setAttribute("data-bs-dismiss", "offcanvas");
+    dismissBtn.setAttribute("aria-label", "Close");
+    offcanvasHeader.appendChild(dismissBtn);
+
+    offcanvasContainer.appendChild(offcanvasHeader);
+
+    let offcanvasBody = document.createElement("div");
+    offcanvasBody.classList.add("offcanvas-body");
+
+
+
+
+
+    offcanvasContainer.appendChild(offcanvasBody);
+
+}
 
 
 
