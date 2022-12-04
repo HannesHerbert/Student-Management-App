@@ -12,19 +12,160 @@
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Student</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
-          ...
+          <!-- ! Form Start -->
+          <form class="row g-3">
+            <div class="col-md-4">
+              <label for="validationFirstName" class="form-label">First name</label>
+              <input type="text" class="form-control" id="validationFirstName" required>
+              
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+
+            </div>
+      
+            <div class="col-md-4">
+              <label for="validationLastName" class="form-label">Last name</label>
+              <input type="text" class="form-control " id="validationLastName" required>
+              
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+      
+            </div>
+      
+            <div class="col-md-4">
+              <label for="validationServerClassname" class="form-label">Class name</label>
+      
+              <div class="input-group has-validation">
+                <!-- <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search or Create a new Class"> -->
+                <input class="form-control" placeholder="Type to search or Create a new Class" list="datalistOptions" id="validationServerClassname" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>
+                <datalist id="datalistOptions">
+                  <!-- <option value="San Francisco">
+                  <option value="New York">
+                  <option value="Seattle">
+                  <option value="Los Angeles">
+                  <option value="Chicago"> -->
+                </datalist>
+      
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                  Please provide a classname.
+                </div>
+      
+      
+                <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
+                
+      
+              </div>
+            
+            </div>
+      
+            <div class="col-md-4">
+      
+              <label for="validationServerStreetName" class="form-label">Street</label>
+              <input type="text" class="form-control" id="validationServerStreetName" aria-describedby="validationServer03Feedback" required>
+              <div id="validationServer03Feedback" class="invalid-feedback">
+                Please provide a valid street name.
+              </div>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+      
+            <div class="col-md-2">
+      
+              <label for="validationServerStreetNumber" class="form-label">House number</label>
+              <input type="number" class="form-control" id="validationServerStreetNumber" min="1" required>
+              
+
+
+              <div id="validationServerStreetNumberFeedback" class="invalid-feedback">
+                Please provide a valid street name.
+              </div>
+
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+
+            </div>
+      
+            <div class="col-md-4">
+
+              <!-- 
+
+              <label for="validationFirstName" class="form-label">First name</label>
+              <input type="text" class="form-control" id="validationFirstName" required>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+
+               -->
+      
+              <label for="validationServerCity" class="form-label">City</label>
+              <input type="text" class="form-control" id="validationServerCity" required>
+              
+              <div id="validationServerCityFeedback" class="invalid-feedback">
+                Please provide a valid city.
+              </div>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+
+            </div>
+      
+            <div class="col-md-2">
+              <label for="validationServerZipCode" class="form-label">Zip</label>
+              <input type="number" class="form-control" id="validationServerZipCode" aria-describedby="validationServer05Feedback" min="1" required>
+              <div id="validationServerZipCodeFeedback" class="invalid-feedback">
+                Please provide a valid zip.
+              </div>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+      
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
+                <label class="form-check-label" for="invalidCheck3">
+                  Agree to terms and conditions
+                </label>
+
+                <div id="invalidCheck3Feedback" class="invalid-feedback">
+                  You must agree before submitting.
+                </div>
+                
+              </div>
+            </div>
+            <!-- <div class="col-12">
+              <button class="btn btn-primary" type="submit">Submit form</button>
+            </div> -->
+
+
+            <hr>
+            <div>
+
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+              <button class="btn btn-primary" type="submit">Submit form</button>
+
+            </div>
+
+          <!-- ! Form End -->
+          </form>
+        <!-- !Modal Body End -->
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+
+
+
       </div>
     </div>
   </div>
@@ -42,7 +183,7 @@
       <div class="input-group w-50 ms-1">
         <input type="text" class="form-control " placeholder="Search Student" aria-label="Recipient's username"
           aria-describedby="button-addon2">
-        <button class="btn btn-secondary" type="button" id="button-addon2">
+        <button class="btn btn-secondary" type="button" id="search-btn">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 20">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
           </svg>
@@ -50,7 +191,7 @@
       </div>
   
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-secondary me-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-secondary me-5" data-bs-toggle="modal" data-bs-target="#exampleModal" id="add-new-student-btn" >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-add" viewBox="0 1 16 16">
             <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
             <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
@@ -88,93 +229,7 @@
       </ul>
     </nav>
 
-    <form class="row g-3">
-      <div class="col-md-4">
-        <label for="validationServer01" class="form-label">First name</label>
-        <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label for="validationServer02" class="form-label">Last name</label>
-        <input type="text" class="form-control is-valid" id="validationServer02" value="Otto" required>
-        
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-
-      </div>
-
-      <div class="col-md-4">
-        <label for="exampleDataList" class="form-label">Class name</label>
-
-
-        <div class="input-group has-validation">
-          <!-- <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search or Create a new Class"> -->
-          <input class="form-control is-invalid" placeholder="Type to search or Create a new Class" list="datalistOptions" id="validationServerClassname" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>
-          <datalist id="datalistOptions">
-            <option value="San Francisco">
-            <option value="New York">
-            <option value="Seattle">
-            <option value="Los Angeles">
-            <option value="Chicago">
-          </datalist>
-
-          <div id="validationServerUsernameFeedback" class="invalid-feedback">
-            Please provide a classname.
-          </div>
-
-
-          <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
-          
-
-        </div>
-      
-      </div>
-
-
-      <div class="col-md-6">
-
-        <label for="validationServer03" class="form-label">City</label>
-        <input type="text" class="form-control is-invalid" id="validationServer03" aria-describedby="validationServer03Feedback" required>
-        <div id="validationServer03Feedback" class="invalid-feedback">
-          Please provide a valid city.
-        </div>
-      </div>
-      <div class="col-md-3">
-        <label for="validationServer04" class="form-label">State</label>
-        <select class="form-select is-invalid" id="validationServer04" aria-describedby="validationServer04Feedback" required>
-          <option selected disabled value="">Choose...</option>
-          <option>...</option>
-        </select>
-        <div id="validationServer04Feedback" class="invalid-feedback">
-          Please select a valid state.
-        </div>
-      </div>
-      <div class="col-md-3">
-        <label for="validationServer05" class="form-label">Zip</label>
-        <input type="text" class="form-control is-invalid" id="validationServer05" aria-describedby="validationServer05Feedback" required>
-        <div id="validationServer05Feedback" class="invalid-feedback">
-          Please provide a valid zip.
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="form-check">
-          <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
-          <label class="form-check-label" for="invalidCheck3">
-            Agree to terms and conditions
-          </label>
-          <div id="invalidCheck3Feedback" class="invalid-feedback">
-            You must agree before submitting.
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <button class="btn btn-primary" type="submit">Submit form</button>
-      </div>
-    </form>
+   
 
   </div>
 

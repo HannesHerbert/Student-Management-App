@@ -12,7 +12,7 @@ const offcanvasContainer = document.querySelector("#staticBackdrop");
 
 
 
-
+//? AccordionContainer
 const elAccordion = document.querySelector("#accordionExample");
 
 
@@ -22,21 +22,57 @@ let dataSet1 = await fetchStudents();
 console.log(dataSet1);
 
 
+let form = document.querySelector("form");
+console.log(form);
+
+form.addEventListener("input", (evt) => {
+  if (evt.target.value.trim().length > 0 || evt.target.checked) {
+    evt.target.classList.remove("is-invalid")
+    evt.target.classList.add("is-valid");
+  } else {
+    evt.target.classList.remove("is-valid");
+    evt.target.classList.add("is-invalid");
+
+  }
+})
+
+form.addEventListener("submit", (evt) => {
+
+
+    // let data = {
+    //     address: {
+    //     street: "",
+    //     streetNum: undefined,
+    //     postalCode: undefined,
+    //     city: "",
+    //     },
+    //     name: "",
+    //     classId: "",                               
+    // }
+    
+
+    
+    
+    evt.preventDefault()
+
+
+
+    console.log(evt);
+
+
+
+    if (!form.checkValidity()) {
+        console.log("nicht valid");
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
+      form.classList.add('was-validated')
+}, false);
 
 
 
 
 
-let data = {
-    address: {
-       street: "Übelst-Str",
-       streetNum: 3,
-       postalCode: 94315,
-       city: "Hoierswerda",
-    },
-    name: "Heribert Pappenheimer",
-    classId: "CS-2022",                               
- }
 
 //let testAdd = await addNewStudent(data);
 
@@ -75,6 +111,18 @@ let map = new Map([...map1].sort());
 
 console.log(map);
 
+//?Add New Student Button
+document.querySelector("#add-new-student-btn").addEventListener("click", (evt) => {
+    let classNames = Array.from(map.keys())
+    let dataList = document.querySelector("#datalistOptions");
+    classNames.forEach(className => {
+        let option = document.createElement("option");
+        option.value = className;
+
+        dataList.appendChild(option);
+    });
+});
+
 
 function renderAccordionItems() {
     let index = 1;
@@ -97,11 +145,11 @@ function renderAccordionItems() {
         accordionBtn.setAttribute("aria-controls", `collapse${index}`);
         accordionBtn.textContent = key;
 
-        //let classSizeBadge = document.createElement("span");
-        //classSizeBadge.classList.add("badge", "bg-primary", "rounded-pill", "position-absolute", "top-50", "start-60", "translate-middle");
-        //classSizeBadge.classList.add("badge", "text-bg-secondary", "float-end")
-        // classSizeBadge.textContent = value.length;
-        // accordionBtn.appendChild(classSizeBadge);
+        let classSizeBadge = document.createElement("span");
+        // classSizeBadge.classList.add("badge", "bg-primary", "rounded-pill", "position-absolute", "top-50", "start-60", "translate-middle");
+        classSizeBadge.classList.add("badge", "text-bg-secondary", "float-end")
+        classSizeBadge.textContent = value.length;
+        accordionBtn.appendChild(classSizeBadge);
     
         accordionHeading.appendChild(accordionBtn);
         accordionItem.appendChild(accordionHeading);
@@ -186,12 +234,7 @@ function renderStudentDetails(evt) {
     let offcanvasBody = document.createElement("div");
     offcanvasBody.classList.add("offcanvas-body");
 
-
-
-
-
     offcanvasContainer.appendChild(offcanvasBody);
-
 }
 
 
