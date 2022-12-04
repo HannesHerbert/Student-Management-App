@@ -15,15 +15,11 @@ const offcanvasContainer = document.querySelector("#staticBackdrop");
 //? AccordionContainer
 const elAccordion = document.querySelector("#accordionExample");
 
-
+await getData();
 
 //? --------TEST-SECTION---------
-let dataSet1 = await fetchStudents();
-console.log(dataSet1);
-
 
 let form = document.querySelector("form");
-console.log(form);
 
 form.addEventListener("input", (evt) => {
   if (evt.target.value.trim().length > 0 || evt.target.checked) {
@@ -36,28 +32,45 @@ form.addEventListener("input", (evt) => {
   }
 })
 
-form.addEventListener("submit", (evt) => {
+form.addEventListener("submit", async (evt) => {
 
 
-    // let data = {
-    //     address: {
-    //     street: "",
-    //     streetNum: undefined,
-    //     postalCode: undefined,
-    //     city: "",
-    //     },
-    //     name: "",
-    //     classId: "",                               
-    // }
+    let data = {
+        address: {
+        street: "",
+        streetNum: undefined,
+        postalCode: undefined,
+        city: "",
+        },
+        name: "",
+        classId: "",                               
+    }
     
+    let firstName = document.querySelector("#validationFirstName")
+    let surName = document.querySelector("#validationLastName")
+    data.name = `${firstName.value} ${surName.value}`;
 
-    
-    
-    evt.preventDefault()
+    let id = document.querySelector("#validationServerClassname");
+    data.classId = id.value;
+
+    let streetName = document.querySelector("#validationServerStreetName");
+    data.address.street = streetName.value;
+
+    let streetNumber = document.querySelector("#validationServerStreetNumber");
+    data.address.streetNum = streetNumber.value;
+
+    let cityName = document.querySelector("#validationServerCity");
+    data.address.city = cityName.value;
+
+    let zipCode = document.querySelector("#validationServerZipCode");
+    data.address.postalCode = zipCode.value;
+
+    console.log(data);
+
+    await addNewStudent(data);
 
 
-
-    console.log(evt);
+    await getData();
 
 
 
@@ -67,6 +80,8 @@ form.addEventListener("submit", (evt) => {
         evt.stopPropagation()
       }
       form.classList.add('was-validated')
+
+
 }, false);
 
 
@@ -74,7 +89,7 @@ form.addEventListener("submit", (evt) => {
 
 
 
-//let testAdd = await addNewStudent(data);
+//let testAdd = 
 
 //let testDelete = await deleteStudent("638a0f3e14ad8fee27c12ab9")
 
@@ -99,20 +114,16 @@ async function getData() {
             let classArray = [student];
             dataMap.set(className, classArray);
         }
-    });  
-    return dataMap
-}
+    });
+    let map = new Map([...dataMap].sort());
+    renderAccordionItems(map);
+    return map;
+};
 
-let map1 = await getData();
-let map = new Map([...map1].sort());
-// const map = new Map([...temp].sort((a, b) => console.log(a[1],b[1])));
-
-// map = new Map([...temp.entries()].sort((a, b) => a[1][0].name.localeCompare(b[1][0].name)));
-
-console.log(map);
 
 //?Add New Student Button
-document.querySelector("#add-new-student-btn").addEventListener("click", (evt) => {
+document.querySelector("#add-new-student-btn").addEventListener("click", async (evt) => {
+    let map = await getData();
     let classNames = Array.from(map.keys())
     let dataList = document.querySelector("#datalistOptions");
     classNames.forEach(className => {
@@ -124,7 +135,7 @@ document.querySelector("#add-new-student-btn").addEventListener("click", (evt) =
 });
 
 
-function renderAccordionItems() {
+function renderAccordionItems(map) {
     let index = 1;
 
     for (const [key, value] of map) {
@@ -196,7 +207,6 @@ function renderAccordionItems() {
 }
 
 
-renderAccordionItems()
 
 const elStudentDetailView = document.querySelectorAll(".student-detail-btn");
 elStudentDetailView.forEach(student => {
