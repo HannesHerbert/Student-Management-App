@@ -7,6 +7,9 @@ import { fetchStudents, addNewStudent, deleteStudent } from './data.js';
 /* -------------------------------------------------------------------------------  */
 //const elClassSelectionInput = document.querySelector("#datalistOptions");
 
+//?Studenten-Detailansicht
+const offcanvasContainer = document.querySelector("#staticBackdrop");
+
 
 
 
@@ -18,11 +21,7 @@ const elAccordion = document.querySelector("#accordionExample");
 let dataSet1 = await fetchStudents();
 console.log(dataSet1);
 
-// Ansichtauswahl mit nur einem Selector
-let inputGroup = document.querySelector("#view-selection");
-inputGroup.addEventListener("click", (evt) => {
-    console.log(evt.target, evt.target.checked);
-})
+
 
 
 
@@ -84,6 +83,7 @@ function renderClassNames() {
 
 
 function renderAccordionItems() {
+    // elAccordion.replaceChildren();
     /* 
         <div class="accordion-item"> ok
           <h2 class="accordion-header" id="headingOne"> ok
@@ -143,20 +143,20 @@ function renderAccordionItems() {
         let accordionBody = document.createElement("div");
         accordionBody.classList.add("accordion-body");
 
-        let orderedList = document.createElement("ol");
-        orderedList.classList.add("list-group", "list-group-numbered");
+        let orderedList = document.createElement("ul");
+        orderedList.classList.add("list-group");
 
-        value.forEach(student => {
+        value.forEach((student, index) => {
             let listItem = document.createElement("li");
             listItem.classList.add("list-group-item");
 
             let btn = document.createElement("button")
-            btn.classList.add("btn", "btn-light", "text-start", "student-detail-btn");
+            btn.classList.add("btn", "btn-light", "text-start", "w-100", "student-detail-btn");
             btn.type = "button";
             btn.setAttribute("data-bs-toggle","offcanvas");
             btn.setAttribute("data-bs-target", "#staticBackdrop");
             btn.setAttribute("aria-controls", "staticBackdrop");
-            btn.textContent = student.name;
+            btn.textContent = `${index+1}. ${student.name}`;
             btn.id = student._id;
 
             listItem.appendChild(btn)
@@ -184,7 +184,9 @@ elStudentDetailView.forEach(student => {
 });
 
 function renderStudentDetails(evt) {
-    const offcanvasContainer = document.querySelector("#staticBackdrop");
+
+
+    offcanvasContainer.replaceChildren()
 
     console.log(evt.target.id);
 

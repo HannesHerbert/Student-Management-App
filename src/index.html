@@ -9,127 +9,64 @@
 
 <body>
 
-  <div id="app" class="container mt-3 rounded">
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Student</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--   StudentenAnsicht -->  
+  <div class="offcanvas offcanvas-end" data-bs-backdrop="offcanvas" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+          <!-- // Wird in JS erzeugt -->
+  </div>
+
+  <div id="app" class="d-flex row m-5 rounded">
     <h1>Student Management</h1>
 
-    <!-- ! Container für Students/Classes Auswahl und Student-Search -->
-    <div class="btn-toolbar justify-content-between  my-3" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group" id="view-selection">
-          <!-- Radio für Studentenansicht -->
-          <input type="radio" class="btn-check " name="btnradio" id="radio-studentview-input" autocomplete="off">
-          <label class="btn btn-outline-primary" for="radio-studentview-input">Students</label>
-          <!-- Radio für Klassenansicht -->
-          <input type="radio" class="btn-check" name="btnradio" id="radio-classview-input" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="radio-classview-input">Classes</label>
-          <!-- Input für Klassen - oder Einträge pro Seite Wahl -->
-          <!-- <input type="select" class="form-control ps-2" list="datalistOptions" id="exampleDataList" placeholder="Choose a Class">
-          <datalist id="datalistOptions"> -->
-            <!-- Wird in JS erzeugt -->
-            <!-- <option value="San Francisco">
-            <option value="New York">
-            <option value="Seattle">
-            <option value="Los Angeles">
-            <option value="Chicago"> -->
-          <!-- </datalist> -->
-        </div>
-        <!-- Studenten-Suchbereich  -->
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search Student" aria-label="Recipient's username"
-            aria-describedby="button-addon2">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-        </div>
-    </div>
-    <!-- Navigation für die Ansicht -->
-    <!-- <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-
-        <li class="breadcrumb-item active" aria-current="page">Klassen</li>
-        <li class="breadcrumb-item"><a href="#">Studenten</a></li>
-        <li class="breadcrumb-item"><a href="#">Detailansicht</a></li>
-
-      </ol>
-    </nav> -->
-
-    <div class="offcanvas offcanvas-end" data-bs-backdrop="offcanvas" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
-      <!-- <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="staticBackdropLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <!-- Studenten-Suchbereich  -->
+    <div class="d-flex justify-content-between mb-3 " >
+      <div class="input-group w-50 ms-1">
+        <input type="text" class="form-control " placeholder="Search Student" aria-label="Recipient's username"
+          aria-describedby="button-addon2">
+        <button class="btn btn-secondary" type="button" id="button-addon2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 20">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+      </button>
       </div>
-      <div class="offcanvas-body">
-        <div>
-          I will not close if you click outside of me.
-        </div>
-      </div> -->
+  
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary me-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-add" viewBox="0 1 16 16">
+            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+            <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+          </svg>
+        </button>
     </div>
+
+
+
+
 
     <!-- ! Ausgabebereich -->
-    <div class="d-flex">
-
-      <div class="accordion w-75" id="accordionExample">
-
-        <!-- <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-              aria-expanded="true" aria-controls="collapseOne">
-              Accordion Item #1
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
-              plugin
-              adds the appropriate classes that we use to style each element. These classes control the overall
-              appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom
-              CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the
-              <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-          </div>
-        </div>  
-
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-              Accordion Item #2
-            </button>
-          </h2>
-          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-            data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
-
-              <ol class="list-group list-group-numbered">
-                <li class="list-group-item">A list item</li>
-                <li class="list-group-item">A list item</li>
-                <li class="list-group-item">A list item</li>
-              </ol>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-              Accordion Item #3
-            </button>
-          </h2>
-          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-            data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-              <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
-              happening here in terms of content, but just filling up the space to make it look, at least at first
-              glance,
-              a bit more representative of how this would look in a real-world application.
-            </div>
-          </div>
-        </div> -->
-
-      </div>
 
 
-
+    <div class="accordion w-100" id="accordionExample">
+      <!-- // Wird in JS erzeugt -->
     </div>
 
     <!-- ! Pagination -->
