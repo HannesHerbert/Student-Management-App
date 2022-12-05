@@ -202,8 +202,6 @@ function renderAccordion(array, start, end) {
     accordionWrapper.id = 'accordionExample';
     accordionContainer.appendChild(accordionWrapper);
 
-    console.log(view);
-
     if (view === 'Students') {
         for (let index = start - 1; index < end; index++) {
 
@@ -284,8 +282,6 @@ function renderAccordion(array, start, end) {
         }
     }
     else if (view === 'Classes') {
-
-        console.log('los!!');
 
         for (let index = start - 1; index < end; index++) {
 
