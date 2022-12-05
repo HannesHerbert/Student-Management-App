@@ -2,38 +2,54 @@
 import '../scss/styles.scss';
 // Import all of Bootstrap's JS
 import * as bootstrap from 'bootstrap';
+
 // Import our custom JS
-import { fetchStudents, addNewStudent, deleteStudent } from './data.js';
+import getData from "./getData.js";
+
+import { fetchStudents, addNewStudent, deleteStudent, getSingleStudent } from './data.js';
+import renderAccordionItems from "./renderAccordionItems.js";
+import renderStudent from "./renderStudentDetails.js";
 /* -------------------------------------------------------------------------------  */
-//const elClassSelectionInput = document.querySelector("#datalistOptions");
-
-//?Studenten-Detailansicht
-const offcanvasContainer = document.querySelector("#staticBackdrop");
 
 
 
-//? AccordionContainer
-const elAccordion = document.querySelector("#accordionExample");
+/* let elStudentDetailView = document.querySelectorAll(".student-detail-btn");
 
-await getData();
+console.log(elStudentDetailView); */
+
+//? Form for student information
+let form = document.querySelector("#student-form"); 
+
+
+//// fire rendering
+//fetching data fom API
+let dataSet = await fetchStudents();
+let schoolMap = await getData(dataSet.students);
+console.log(schoolMap);
+renderAccordionItems(schoolMap);
+let elStudentDetailView = document.querySelectorAll(".student-detail-btn");
+renderStudent(elStudentDetailView);
+
 
 //? --------TEST-SECTION---------
 
-let form = document.querySelector("form");
 
-form.addEventListener("input", (evt) => {
-  if (evt.target.value.trim().length > 0 || evt.target.checked) {
-    evt.target.classList.remove("is-invalid")
-    evt.target.classList.add("is-valid");
-  } else {
-    evt.target.classList.remove("is-valid");
-    evt.target.classList.add("is-invalid");
 
-  }
-})
+// form.addEventListener("input", (evt) => {
+
+//   if (evt.target.value.trim().length > 0 || evt.target.checked) {
+//     evt.target.classList.remove("is-invalid");
+//     evt.target.classList.add("is-valid");
+//   } else {
+//     evt.target.classList.remove("is-valid");
+//     evt.target.classList.add("is-invalid");
+
+//   }
+// })
 
 form.addEventListener("submit", async (evt) => {
 
+    console.log(form);
 
     let data = {
         address: {
@@ -65,191 +81,94 @@ form.addEventListener("submit", async (evt) => {
     let zipCode = document.querySelector("#validationServerZipCode");
     data.address.postalCode = zipCode.value;
 
-    console.log(data);
 
-    await addNewStudent(data);
+    let schoolDataResponse = await addNewStudent(data);
 
-
-    await getData();
-
-
-
-    if (!form.checkValidity()) {
-        console.log("nicht valid");
-        evt.preventDefault()
-        evt.stopPropagation()
-      }
-      form.classList.add('was-validated')
-
-
-}, false);
+    console.log("schoolDataResponse   ",schoolDataResponse);
+    
+    let schoolMap = await getData(schoolDataResponse);
+    renderAccordionItems(schoolMap)
 
 
 
 
 
+});
 
-//let testAdd = 
-
-//let testDelete = await deleteStudent("638a0f3e14ad8fee27c12ab9")
-
-
-//! ---------Approved------------
-
-async function getData() {
-    //fetching data fom API
-    let dataSet = await fetchStudents();
-    //creating a new Map
-    let dataMap = new Map();
-    //Iterating over all Students
-    dataSet.students.forEach(async student => {
-        //Extracting class name of every student 
-        let className = student.classId;
-        //
-        if (dataMap.has(className)) {
-            let theClass = dataMap.get(className);
-            theClass.push(student);
-            dataMap.set(className, theClass);
-        } else {
-            let classArray = [student];
-            dataMap.set(className, classArray);
-        }
-    });
-    let map = new Map([...dataMap].sort());
-    renderAccordionItems(map);
-    return map;
-};
-
-
-//?Add New Student Button
-document.querySelector("#add-new-student-btn").addEventListener("click", async (evt) => {
-    let map = await getData();
-    let classNames = Array.from(map.keys())
+//? Klassennamen werden dem Formular hinzugefügt
+document.querySelector("#add-new-student-btn").addEventListener("click", async () => {
+    let classNames = Array.from(schoolMap.keys())
     let dataList = document.querySelector("#datalistOptions");
     classNames.forEach(className => {
         let option = document.createElement("option");
         option.value = className;
-
         dataList.appendChild(option);
     });
 });
 
 
-function renderAccordionItems(map) {
-    let index = 1;
 
-    for (const [key, value] of map) {
 
-        let accordionItem = document.createElement("div");
-        accordionItem.classList.add("accordion-item");
-    
-        let accordionHeading = document.createElement("h2");
-        accordionHeading.classList.add("accordion-header");
-        accordionHeading.id = `heading${index}`;
-    
-        let accordionBtn = document.createElement("button");
-        accordionBtn.classList.add("accordion-button");
-        accordionBtn.type = "button";
-        accordionBtn.setAttribute("data-bs-toggle","collapse");
-        accordionBtn.setAttribute("data-bs-target", `#collapse${index}`);
-        accordionBtn.setAttribute("aria-expanded", "true");
-        accordionBtn.setAttribute("aria-controls", `collapse${index}`);
-        accordionBtn.textContent = key;
 
-        let classSizeBadge = document.createElement("span");
-        // classSizeBadge.classList.add("badge", "bg-primary", "rounded-pill", "position-absolute", "top-50", "start-60", "translate-middle");
-        classSizeBadge.classList.add("badge", "text-bg-secondary", "float-end")
-        classSizeBadge.textContent = value.length;
-        accordionBtn.appendChild(classSizeBadge);
-    
-        accordionHeading.appendChild(accordionBtn);
-        accordionItem.appendChild(accordionHeading);
-    
-        let accordionShowContainer = document.createElement("div");
-        accordionShowContainer.id = `collapse${index}`;
-        accordionShowContainer.classList.add("accordion-collapse" ,"collapse");
-        accordionShowContainer.setAttribute("aria-labelledby", `heading${index}`);
-        accordionShowContainer.setAttribute("data-bs-parent", "#accordionExample");
-    
-        let accordionBody = document.createElement("div");
-        accordionBody.classList.add("accordion-body");
 
-        let orderedList = document.createElement("ul");
-        orderedList.classList.add("list-group");
 
-        value.forEach((student, index) => {
-            let listItem = document.createElement("li");
-            listItem.classList.add("list-group-item");
 
-            let btn = document.createElement("button")
-            btn.classList.add("btn", "btn-light", "text-start", "w-100", "student-detail-btn");
-            btn.type = "button";
-            btn.setAttribute("data-bs-toggle","offcanvas");
-            btn.setAttribute("data-bs-target", "#staticBackdrop");
-            btn.setAttribute("aria-controls", "staticBackdrop");
-            btn.textContent = `${index+1}. ${student.name}`;
-            btn.id = student._id;
 
-            listItem.appendChild(btn)
 
-            orderedList.appendChild(listItem);
-        });
+// ! TESTING ------------------
 
-        accordionBody.appendChild(orderedList);
-        accordionShowContainer.appendChild(accordionBody);
-        accordionItem.appendChild(accordionShowContainer);
 
-        elAccordion.appendChild(accordionItem);
+// let tableBody = document.querySelector(".table > tbody")
+// tableBody.replaceChildren();
 
-        index++;
-    }
+
+async function renderStudentList() {
+
+    let studentResponse = await fetchStudents();
+    console.log(studentResponse);
+
+    let students = studentResponse.students;
+
+
+    students.forEach(student => {
+        let row = document.createElement("tr");
+
+        //Namessplate erstellen und befüllen
+        let nameCol = document.createElement("td");
+        nameCol.textContent = student.name;
+
+        let classIdCol = document.createElement("td");
+        classIdCol.textContent = student.classId;
+
+        let cityCol = document.createElement("td");
+        cityCol.textContent = student.address.city;
+
+        /* ----- Bedienknöpfe ----- */
+
+        let editCol = document.createElement("td");
+        let editBtn = document.createElement("button");
+        editBtn.classList.add("btn", "btn-secondary-outline", "btn-sm" );
+        editBtn.textContent = "Edit"
+        editCol.appendChild(editBtn);
+
+        let deleteCol = document.createElement("td");
+        let delBtn = document.createElement("button");
+        delBtn.classList.add("btn", "btn-danger-outline", "btn-sm" );
+        delBtn.textContent = "Delete"
+        deleteCol.appendChild(delBtn);
+
+
+        row.appendChild(nameCol);
+        row.appendChild(classIdCol);
+        row.appendChild(cityCol);
+        row.appendChild(editCol);
+        row.appendChild(deleteCol);
+
+        tableBody.appendChild(row);
+
+    })
 
 }
-
-
-
-const elStudentDetailView = document.querySelectorAll(".student-detail-btn");
-elStudentDetailView.forEach(student => {
-    student.addEventListener("click", renderStudentDetails);
-});
-
-function renderStudentDetails(evt) {
-
-
-    offcanvasContainer.replaceChildren()
-
-    console.log(evt.target.id);
-
-    console.log(evt.target.innerHTML);
-
-
-    let offcanvasHeader = document.createElement("div");
-    offcanvasHeader.classList.add("offcanvas-header");
-
-    let heading = document.createElement("h5");
-    heading.classList.add("offcanvas-title");
-    heading.id = "staticBackdropLabel";
-    heading.textContent = `Student: ${evt.target.innerHTML}`
-    offcanvasHeader.appendChild(heading);
-
-    let dismissBtn = document.createElement("button");
-    dismissBtn.type = "button";
-    dismissBtn.classList.add("btn-close");
-    dismissBtn.setAttribute("data-bs-dismiss", "offcanvas");
-    dismissBtn.setAttribute("aria-label", "Close");
-    offcanvasHeader.appendChild(dismissBtn);
-
-    offcanvasContainer.appendChild(offcanvasHeader);
-
-    let offcanvasBody = document.createElement("div");
-    offcanvasBody.classList.add("offcanvas-body");
-
-    offcanvasContainer.appendChild(offcanvasBody);
-}
-
-
-
-
 
 
 

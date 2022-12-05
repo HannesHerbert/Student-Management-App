@@ -2,28 +2,34 @@ const API_BASE_URL = 'https://test.100best.guide/locations/dci-students';
 const API_STUDENT_ENDPOINT = 'student';
 
 // Bsp.: https://test.100best.guide/locations/dci-students/student?skip=10&limit=20
-async function fetchStudents(limit, skip, classId) {
+async function fetchStudents(limit = "", skip = "", classId ="") {
 
-    let response;
-    let data;
 
-    if(limit === undefined) limit = "";
-    if(skip === undefined) skip = "";
-    if(classId === undefined) classId = "";
+    let url = `${API_BASE_URL}/${API_STUDENT_ENDPOINT}/?limit=${limit}&skip=${skip}&classId=${classId}`
 
-    response = await fetch(`https://test.100best.guide/locations/dci-students/student?limit=${limit}&skip=${skip}&classId=${classId}`);
-    data = response.json();
+    // if(limit === undefined) limit = "";
+    // if(skip === undefined) skip = "";
+    // if(classId === undefined) classId = "";
+
+
+
+
+    let response = await fetch(url);
+    let body = response.json();
+
+    if (response.status === 500) {
+        console.log("Internal Server Error - Check URL");
+        return Promise.reject(body);
+    }
 
     if (response.ok) {
-        return Promise.resolve(data);
-    } else {
-        return Promise.reject(data);
+        return Promise.resolve(body);
     }
+
+    return Promise.reject(body);
 }
 
 
-// API-Kommunikations-Funktion zum Einreichen eines neuen Todos
-// erhaelt den Todotext als Parameter
 async function addNewStudent(newStudent) {
     // Bilde Options-Objekt fuer fetch
     let options = {
@@ -78,4 +84,25 @@ async function deleteStudent(studentId) {
 
 }
 
-export { fetchStudents, addNewStudent, deleteStudent };
+async function getSingleStudent(id) {
+    let res = await fetch(`https://test.100best.guide/locations/dci-students/student/${id}`);
+    let body = await res.json();
+
+    console.log(res.status);
+
+    // Wenn POST-Antwort Statuscode 2XX hat
+    if (res.ok) {
+        // Loese den Promise positiv auf und gebe die Payload vom Server zurueck
+        return Promise.resolve(body);
+    
+    } else if (res.status === 409) {
+        console.log("student bereits vorhanden");
+    } else {
+
+        return Promise.reject('fehler');
+    }
+
+    return body;
+}
+
+export { fetchStudents, addNewStudent, deleteStudent, getSingleStudent };

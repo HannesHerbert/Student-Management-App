@@ -21,7 +21,7 @@
         
         <div class="modal-body">
           <!-- ! Form Start -->
-          <form class="row g-3">
+          <form id="student-form" class="row g-3">
             <div class="col-md-4">
               <label for="validationFirstName" class="form-label">First name</label>
               <input type="text" class="form-control" id="validationFirstName" required>
@@ -49,11 +49,7 @@
                 <!-- <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search or Create a new Class"> -->
                 <input class="form-control" placeholder="Type to search or Create a new Class" list="datalistOptions" id="validationServerClassname" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>
                 <datalist id="datalistOptions">
-                  <!-- <option value="San Francisco">
-                  <option value="New York">
-                  <option value="Seattle">
-                  <option value="Los Angeles">
-                  <option value="Chicago"> -->
+                  <!-- Options werden in JS erzeugt -->
                 </datalist>
       
                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
@@ -83,7 +79,7 @@
             <div class="col-md-2">
       
               <label for="validationServerStreetNumber" class="form-label">House number</label>
-              <input type="number" class="form-control" id="validationServerStreetNumber" min="1" required>
+              <input type="text" class="form-control" id="validationServerStreetNumber" required>
               
 
 
@@ -123,7 +119,7 @@
       
             <div class="col-md-2">
               <label for="validationServerZipCode" class="form-label">Zip</label>
-              <input type="number" class="form-control" id="validationServerZipCode" aria-describedby="validationServer05Feedback" min="1" required>
+              <input type="text" class="form-control" id="validationServerZipCode" aria-describedby="validationServer05Feedback" min="1" required>
               <div id="validationServerZipCodeFeedback" class="invalid-feedback">
                 Please provide a valid zip.
               </div>
@@ -132,7 +128,7 @@
               </div>
             </div>
       
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
                 <label class="form-check-label" for="invalidCheck3">
@@ -144,7 +140,7 @@
                 </div>
                 
               </div>
-            </div>
+            </div> -->
             <!-- <div class="col-12">
               <button class="btn btn-primary" type="submit">Submit form</button>
             </div> -->
@@ -170,7 +166,28 @@
     </div>
   </div>
 
-  <!--   StudentenAnsicht -->  
+  <!--   StudentenAnsicht -->
+
+  <!-- <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Class ID</th>
+        <th scope="col">City</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="0" >Nthing to show yet...</td>
+
+      </tr>
+    </tbody>
+  </table> -->
+
+
   <div class="offcanvas offcanvas-end" data-bs-backdrop="offcanvas" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
           <!-- // Wird in JS erzeugt -->
   </div>
