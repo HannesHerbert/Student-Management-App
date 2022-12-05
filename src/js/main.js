@@ -7,39 +7,89 @@ import { fetchStudents, addNewStudent, deleteStudent } from './data.js';
 /* -------------------------------------------------------------------------------  */
 //const elClassSelectionInput = document.querySelector("#datalistOptions");
 
+//?Studenten-Detailansicht
+const offcanvasContainer = document.querySelector("#staticBackdrop");
 
 
 
+//? AccordionContainer
 const elAccordion = document.querySelector("#accordionExample");
 
-
+await getData();
 
 //? --------TEST-SECTION---------
-let dataSet1 = await fetchStudents();
-console.log(dataSet1);
 
-// Ansichtauswahl mit nur einem Selector
-let inputGroup = document.querySelector("#view-selection");
-inputGroup.addEventListener("click", (evt) => {
-    console.log(evt.target, evt.target.checked);
+let form = document.querySelector("form");
+
+form.addEventListener("input", (evt) => {
+  if (evt.target.value.trim().length > 0 || evt.target.checked) {
+    evt.target.classList.remove("is-invalid")
+    evt.target.classList.add("is-valid");
+  } else {
+    evt.target.classList.remove("is-valid");
+    evt.target.classList.add("is-invalid");
+
+  }
 })
 
+form.addEventListener("submit", async (evt) => {
+
+
+    let data = {
+        address: {
+        street: "",
+        streetNum: undefined,
+        postalCode: undefined,
+        city: "",
+        },
+        name: "",
+        classId: "",                               
+    }
+    
+    let firstName = document.querySelector("#validationFirstName")
+    let surName = document.querySelector("#validationLastName")
+    data.name = `${firstName.value} ${surName.value}`;
+
+    let id = document.querySelector("#validationServerClassname");
+    data.classId = id.value;
+
+    let streetName = document.querySelector("#validationServerStreetName");
+    data.address.street = streetName.value;
+
+    let streetNumber = document.querySelector("#validationServerStreetNumber");
+    data.address.streetNum = streetNumber.value;
+
+    let cityName = document.querySelector("#validationServerCity");
+    data.address.city = cityName.value;
+
+    let zipCode = document.querySelector("#validationServerZipCode");
+    data.address.postalCode = zipCode.value;
+
+    console.log(data);
+
+    await addNewStudent(data);
+
+
+    await getData();
+
+
+
+    if (!form.checkValidity()) {
+        console.log("nicht valid");
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
+      form.classList.add('was-validated')
+
+
+}, false);
 
 
 
 
-let data = {
-    address: {
-       street: "Übelst-Str",
-       streetNum: 3,
-       postalCode: 94315,
-       city: "Hoierswerda",
-    },
-    name: "Heribert Pappenheimer",
-    classId: "CS-2022",                               
- }
 
-//let testAdd = await addNewStudent(data);
+
+//let testAdd = 
 
 //let testDelete = await deleteStudent("638a0f3e14ad8fee27c12ab9")
 
@@ -64,47 +114,28 @@ async function getData() {
             let classArray = [student];
             dataMap.set(className, classArray);
         }
-    });  
-    return dataMap
-}
-
-let map = await getData();
-console.log(map);
-
-function renderClassNames() {
-    //Extrahiere KlassenStrings
-    let classNames = Array.from(map.keys());
-    classNames.forEach(className => {
-        let classOption = document.createElement("option");
-        classOption.value = className;
-        elClassSelectionInput.appendChild(classOption)
     });
-}
-//renderClassNames();
+    let map = new Map([...dataMap].sort());
+    renderAccordionItems(map);
+    return map;
+};
 
 
-function renderAccordionItems() {
-    /* 
-        <div class="accordion-item"> ok
-          <h2 class="accordion-header" id="headingOne"> ok
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-              aria-expanded="true" aria-controls="collapseOne">
-              Accordion Item #1
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
-              plugin
-              adds the appropriate classes that we use to style each element. These classes control the overall
-              appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom
-              CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the
-              <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-          </div>
-        </div>
-    */
+//?Add New Student Button
+document.querySelector("#add-new-student-btn").addEventListener("click", async (evt) => {
+    let map = await getData();
+    let classNames = Array.from(map.keys())
+    let dataList = document.querySelector("#datalistOptions");
+    classNames.forEach(className => {
+        let option = document.createElement("option");
+        option.value = className;
+
+        dataList.appendChild(option);
+    });
+});
+
+
+function renderAccordionItems(map) {
     let index = 1;
 
     for (const [key, value] of map) {
@@ -125,11 +156,11 @@ function renderAccordionItems() {
         accordionBtn.setAttribute("aria-controls", `collapse${index}`);
         accordionBtn.textContent = key;
 
-        //let classSizeBadge = document.createElement("span");
-        //classSizeBadge.classList.add("badge", "bg-primary", "rounded-pill", "position-absolute", "top-50", "start-60", "translate-middle");
-        //classSizeBadge.classList.add("badge", "text-bg-secondary", "float-end")
-        // classSizeBadge.textContent = value.length;
-        // accordionBtn.appendChild(classSizeBadge);
+        let classSizeBadge = document.createElement("span");
+        // classSizeBadge.classList.add("badge", "bg-primary", "rounded-pill", "position-absolute", "top-50", "start-60", "translate-middle");
+        classSizeBadge.classList.add("badge", "text-bg-secondary", "float-end")
+        classSizeBadge.textContent = value.length;
+        accordionBtn.appendChild(classSizeBadge);
     
         accordionHeading.appendChild(accordionBtn);
         accordionItem.appendChild(accordionHeading);
@@ -143,20 +174,20 @@ function renderAccordionItems() {
         let accordionBody = document.createElement("div");
         accordionBody.classList.add("accordion-body");
 
-        let orderedList = document.createElement("ol");
-        orderedList.classList.add("list-group", "list-group-numbered");
+        let orderedList = document.createElement("ul");
+        orderedList.classList.add("list-group");
 
-        value.forEach(student => {
+        value.forEach((student, index) => {
             let listItem = document.createElement("li");
             listItem.classList.add("list-group-item");
 
             let btn = document.createElement("button")
-            btn.classList.add("btn", "btn-light", "text-start", "student-detail-btn");
+            btn.classList.add("btn", "btn-light", "text-start", "w-100", "student-detail-btn");
             btn.type = "button";
             btn.setAttribute("data-bs-toggle","offcanvas");
             btn.setAttribute("data-bs-target", "#staticBackdrop");
             btn.setAttribute("aria-controls", "staticBackdrop");
-            btn.textContent = student.name;
+            btn.textContent = `${index+1}. ${student.name}`;
             btn.id = student._id;
 
             listItem.appendChild(btn)
@@ -176,7 +207,6 @@ function renderAccordionItems() {
 }
 
 
-renderAccordionItems()
 
 const elStudentDetailView = document.querySelectorAll(".student-detail-btn");
 elStudentDetailView.forEach(student => {
@@ -184,7 +214,9 @@ elStudentDetailView.forEach(student => {
 });
 
 function renderStudentDetails(evt) {
-    const offcanvasContainer = document.querySelector("#staticBackdrop");
+
+
+    offcanvasContainer.replaceChildren()
 
     console.log(evt.target.id);
 
@@ -212,12 +244,7 @@ function renderStudentDetails(evt) {
     let offcanvasBody = document.createElement("div");
     offcanvasBody.classList.add("offcanvas-body");
 
-
-
-
-
     offcanvasContainer.appendChild(offcanvasBody);
-
 }
 
 
