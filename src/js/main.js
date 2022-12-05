@@ -24,7 +24,12 @@ renderClassNameOptions();
 
 let sortedStudents = sortStudents(dataSet);
 
-renderAccordion(sortedStudents, 1, 10)
+let view = 'Students';
+
+renderAccordion(sortedStudents, 1, maxViewItems);
+
+renderPagination(sortedStudents);
+
 
 
 
@@ -33,22 +38,31 @@ renderAccordion(sortedStudents, 1, 10)
 
 //Studenten-/Klassenansicht
 inputGroup.addEventListener("click", async (evt) => {
-    console.log(evt.target, evt.target.checked);
 
     if (evt.target.id === 'radio-studentview-input') {
-        console.log('studs');
+        console.log('students-view');
 
+        view = 'Students';
         let dataSet = await fetchStudents();
         sortedStudents = sortStudents(dataSet);
 
-        renderAccordion(sortedStudents, 1, 10);
+        renderAccordion(sortedStudents, 1, maxViewItems);
 
         renderPagination(sortedStudents)
 
     }
 
     if (evt.target.id === 'radio-classview-input') {
-        console.log('classes');
+        console.log('classes-view');
+
+        view = 'Classes';
+        let dataSet = await fetchStudents();
+        let classesArray = getClassesArray(dataSet);
+
+        renderAccordion(classesArray, 1, maxViewItems);
+
+        renderPagination(classesArray);
+
     }
 });
 
@@ -84,7 +98,6 @@ async function getClassesMap() {
 async function renderClassNameOptions() {
 
     let classesMap = await getClassesMap();
-    console.log(classesMap);
 
     //Extrahiere KlassenStrings
     let classNames = Array.from(classesMap.keys());
@@ -96,6 +109,29 @@ async function renderClassNameOptions() {
     });
 }
 
+
+function getClassesArray(array) {
+
+    let classesArray = [];
+
+    array.students.forEach((student) => {
+
+        let i = classesArray.findIndex(e => e.classId === student.classId);
+
+        if (i === -1) {
+            let newClassObject = { classId: '', students: [] };
+            newClassObject.classId = student.classId;
+            newClassObject.students.push(student.name)
+            classesArray.push(newClassObject)
+        }
+        else {
+            classesArray[i].students.push(student.name);
+        }
+    });
+
+    console.log(classesArray);
+    return classesArray;
+};
 
 
 
@@ -154,7 +190,7 @@ function renderAccordion(array, start, end) {
     display.replaceChildren();
 
     let heading = document.createElement('h2');
-    heading.textContent = 'Students:';
+    heading.innerText = view + ':';
     display.appendChild(heading);
 
     let accordionContainer = document.createElement('div');
@@ -166,85 +202,140 @@ function renderAccordion(array, start, end) {
     accordionWrapper.id = 'accordionExample';
     accordionContainer.appendChild(accordionWrapper);
 
-    for (let index = start - 1; index < end; index++) {
+    console.log(view);
 
-        let accordionItem = document.createElement("div");
-        accordionItem.classList.add("accordion-item");
-        accordionWrapper.appendChild(accordionItem);
+    if (view === 'Students') {
+        for (let index = start - 1; index < end; index++) {
 
-        let accordionHeading = document.createElement("h2");
-        accordionHeading.classList.add("accordion-header");
-        accordionHeading.id = `heading${index}`;
-        accordionItem.appendChild(accordionHeading);
+            let accordionItem = document.createElement("div");
+            accordionItem.classList.add("accordion-item");
+            accordionWrapper.appendChild(accordionItem);
 
-        let accordionBtn = document.createElement("button");
-        accordionBtn.classList.add("accordion-button", "collapsed");
-        accordionBtn.type = "button";
-        accordionBtn.setAttribute("data-bs-toggle", "collapse");
-        accordionBtn.setAttribute("data-bs-target", `#collapse${index}`);
-        accordionBtn.setAttribute("aria-expanded", "true");
-        accordionBtn.setAttribute("aria-controls", `collapse${index}`);
-        accordionBtn.textContent = array[index].name.split(' ')[1] + ', ' + array[index].name.split(' ')[0];
-        accordionHeading.appendChild(accordionBtn);
+            let accordionHeading = document.createElement("h2");
+            accordionHeading.classList.add("accordion-header");
+            accordionHeading.id = `heading${index}`;
+            accordionItem.appendChild(accordionHeading);
 
-        let accordionShowContainer = document.createElement("div");
-        accordionShowContainer.id = `collapse${index}`;
-        accordionShowContainer.classList.add("accordion-collapse", "collapse");
-        accordionShowContainer.setAttribute("aria-labelledby", `heading${index}`);
-        accordionShowContainer.setAttribute("data-bs-parent", "#accordionExample");
-        accordionItem.appendChild(accordionShowContainer);
+            let accordionBtn = document.createElement("button");
+            accordionBtn.classList.add("accordion-button", "collapsed");
+            accordionBtn.type = "button";
+            accordionBtn.setAttribute("data-bs-toggle", "collapse");
+            accordionBtn.setAttribute("data-bs-target", `#collapse${index}`);
+            accordionBtn.setAttribute("aria-expanded", "true");
+            accordionBtn.setAttribute("aria-controls", `collapse${index}`);
+            accordionBtn.textContent = array[index].name.split(' ')[1] + ', ' + array[index].name.split(' ')[0];
+            accordionHeading.appendChild(accordionBtn);
 
-        let accordionBody = document.createElement("div");
-        accordionBody.classList.add("accordion-body");
-        accordionShowContainer.appendChild(accordionBody);
+            let accordionShowContainer = document.createElement("div");
+            accordionShowContainer.id = `collapse${index}`;
+            accordionShowContainer.classList.add("accordion-collapse", "collapse");
+            accordionShowContainer.setAttribute("aria-labelledby", `heading${index}`);
+            /* accordionShowContainer.setAttribute("data-bs-parent", "#accordionExample"); */
+            accordionItem.appendChild(accordionShowContainer);
 
-        let table = document.createElement('table');
-        table.classList.add('table', 'table-striped');
-        accordionBody.appendChild(table);
+            let accordionBody = document.createElement("div");
+            accordionBody.classList.add("accordion-body");
+            accordionShowContainer.appendChild(accordionBody);
 
-        let tableBody = document.createElement('tbody');
-        table.appendChild(tableBody);
+            let table = document.createElement('table');
+            table.classList.add('table', 'table-striped');
+            accordionBody.appendChild(table);
 
-        let idRow = document.createElement('tr');
-        tableBody.appendChild(idRow);
+            let tableBody = document.createElement('tbody');
+            table.appendChild(tableBody);
 
-        let idHead = document.createElement('th');
-        idHead.textContent = 'Stud.-ID:'
-        idRow.appendChild(idHead);
+            let idRow = document.createElement('tr');
+            tableBody.appendChild(idRow);
 
-        let idCell = document.createElement('td');
-        idCell.textContent = array[index]._id;
-        idRow.appendChild(idCell);
+            let idHead = document.createElement('th');
+            idHead.textContent = 'Stud.-ID:'
+            idRow.appendChild(idHead);
 
-        let classRow = document.createElement('tr');
-        tableBody.appendChild(classRow);
+            let idCell = document.createElement('td');
+            idCell.textContent = array[index]._id;
+            idRow.appendChild(idCell);
 
-        let classHead = document.createElement('th');
-        classHead.textContent = 'Class:'
-        classRow.appendChild(classHead);
+            let classRow = document.createElement('tr');
+            tableBody.appendChild(classRow);
 
-        let classCell = document.createElement('td');
-        classCell.textContent = array[index].classId;
-        classRow.appendChild(classCell);
+            let classHead = document.createElement('th');
+            classHead.textContent = 'Class:'
+            classRow.appendChild(classHead);
 
-        let addressRow = document.createElement('tr');
-        tableBody.appendChild(addressRow);
+            let classCell = document.createElement('td');
+            classCell.textContent = array[index].classId;
+            classRow.appendChild(classCell);
 
-        let addressHead = document.createElement('th');
-        addressHead.textContent = 'Address:'
-        addressRow.appendChild(addressHead);
+            let addressRow = document.createElement('tr');
+            tableBody.appendChild(addressRow);
 
-        let addressCell = document.createElement('td');
-        let addressString = array[index].address.street + ' ' +
-            array[index].address.streetNum + ', ' +
-            array[index].address.postalCode + ' ' +
-            array[index].address.city;
-        addressCell.textContent = addressString;
-        addressRow.appendChild(addressCell);
+            let addressHead = document.createElement('th');
+            addressHead.textContent = 'Address:'
+            addressRow.appendChild(addressHead);
 
+            let addressCell = document.createElement('td');
+            let addressString = array[index].address.street + ' ' +
+                array[index].address.streetNum + ', ' +
+                array[index].address.postalCode + ' ' +
+                array[index].address.city;
+            addressCell.textContent = addressString;
+            addressRow.appendChild(addressCell);
+
+        }
     }
+    else if (view === 'Classes') {
 
-};
+        console.log('los!!');
+
+        for (let index = start - 1; index < end; index++) {
+
+            let accordionItem = document.createElement("div");
+            accordionItem.classList.add("accordion-item");
+            accordionWrapper.appendChild(accordionItem);
+
+            let accordionHeading = document.createElement("h2");
+            accordionHeading.classList.add("accordion-header");
+            accordionHeading.id = `heading${index}`;
+            accordionItem.appendChild(accordionHeading);
+
+            let accordionBtn = document.createElement("button");
+            accordionBtn.classList.add("accordion-button", "collapsed");
+            accordionBtn.type = "button";
+            accordionBtn.setAttribute("data-bs-toggle", "collapse");
+            accordionBtn.setAttribute("data-bs-target", `#collapse${index}`);
+            accordionBtn.setAttribute("aria-expanded", "true");
+            accordionBtn.setAttribute("aria-controls", `collapse${index}`);
+            accordionBtn.textContent = array[index].classId;
+            accordionHeading.appendChild(accordionBtn);
+
+            let accordionShowContainer = document.createElement("div");
+            accordionShowContainer.id = `collapse${index}`;
+            accordionShowContainer.classList.add("accordion-collapse", "collapse");
+            accordionShowContainer.setAttribute("aria-labelledby", `heading${index}`);
+            accordionItem.appendChild(accordionShowContainer);
+
+            let accordionBody = document.createElement("div");
+            accordionBody.classList.add("accordion-body");
+            accordionShowContainer.appendChild(accordionBody);
+
+            let table = document.createElement('table');
+            table.classList.add('table', 'table-striped');
+            accordionBody.appendChild(table);
+
+            let tableBody = document.createElement('tbody');
+            table.appendChild(tableBody);
+
+            array[index].students.forEach((student) => {
+                let studentRow = document.createElement('tr');
+                tableBody.appendChild(studentRow);
+
+                let studentCell = document.createElement('td');
+                studentCell.textContent = student;
+                studentRow.appendChild(studentCell);
+            })
+        }
+    }
+}
 
 
 //Erzeuge dynamische Seitennavigation
@@ -260,7 +351,7 @@ function renderPagination(array) {
     leftArrowLI.classList.add('pageItem', 'disabled');
     uList.appendChild(leftArrowLI);
 
-    let leftArrowAnchor = document.createElement('a');
+    let leftArrowAnchor = document.createElement('button');
     leftArrowAnchor.classList.add('page-link');
     leftArrowAnchor.setAttribute('aria-label', 'Previous');
     leftArrowLI.appendChild(leftArrowAnchor);
@@ -271,29 +362,43 @@ function renderPagination(array) {
     leftArrowAnchor.appendChild(leftArrowIcon);
 
     let pagesCount = Math.ceil(array.length / maxViewItems);
-    console.log(array.length, pagesCount);
 
     for (let i = 0; i < pagesCount; i++) {
 
         let pageLI = document.createElement('li');
         pageLI.classList.add('page-item', 'page-number');
+        if (i === 0) { pageLI.classList.add('active') }
         uList.appendChild(pageLI);
 
         let pageBtn = document.createElement('button');
         pageBtn.classList.add('page-link');
-        if (i != pagesCount - 1) {
-            pageBtn.addEventListener('click', (evt) => {renderAccordion(sortedStudents, 1 + (i * 10), (i * 10) + 10)});
-        }
-        else {pageBtn.addEventListener('click', (evt) => {renderAccordion(sortedStudents, 1 + (i * 10), array.length)});}
+
+        pageBtn.addEventListener('click', (evt) => {
+
+            let pageNumEls = getPageNumEls();
+            pageNumEls.forEach(pageNum => {
+                pageNum.classList.remove('active');
+            });
+
+            evt.target.parentNode.classList.add('active');
+
+            if (i != pagesCount - 1) {
+                renderAccordion(array, 1 + (i * maxViewItems), (i * maxViewItems) + maxViewItems);
+            }
+            else {
+                renderAccordion(array, 1 + (i * maxViewItems), array.length);
+            }
+        });
+
         pageBtn.textContent = i + 1;
         pageLI.appendChild(pageBtn);
-    };
+    }
 
     let rightArrowLI = document.createElement('li');
     rightArrowLI.classList.add('pageItem');
     uList.appendChild(rightArrowLI);
 
-    let rightArrowAnchor = document.createElement('a');
+    let rightArrowAnchor = document.createElement('button');
     rightArrowAnchor.classList.add('page-link');
     rightArrowAnchor.setAttribute('aria-label', 'Next');
     rightArrowLI.appendChild(rightArrowAnchor);
@@ -321,7 +426,8 @@ function sortStudents(array) {
 
 
 function getPageNumEls() {
-    pageNumEls = document.querySelectorAll('.page-number');
+    let pageNumEls = document.querySelectorAll('.page-number');
+    console.log(pageNumEls);
     return pageNumEls;
 }
 
