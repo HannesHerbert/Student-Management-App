@@ -1,11 +1,31 @@
 //? AccordionContainer
 const elAccordion = document.querySelector("#accordionExample");
 
-function renderAccordionItems(map) {
+import { fetchStudents } from './data.js';
+import getData from "./getData.js";
+import { renderStudent } from './renderStudentDetails.js';
+
+
+async function renderAccordionItems() {
+
+    let dataSet = await fetchStudents();
+    let schoolMap = await getData(dataSet.students);
+
+    //? Klassennamen werden dem Formular hinzugefügt - weil hier die Map geladen wird
+    document.querySelector("#add-new-student-btn").addEventListener("click", async () => {
+    let classNames = Array.from(schoolMap.keys())
+    let dataList = document.querySelector("#datalistOptions");
+    classNames.forEach(className => {
+        let option = document.createElement("option");
+        option.value = className;
+        dataList.appendChild(option);
+        });
+    });
+
     elAccordion.replaceChildren();
     let index = 1;
 
-    for (const [key, value] of map) {
+    for (const [key, value] of schoolMap) {
 
         let accordionItem = document.createElement("div");
         accordionItem.classList.add("accordion-item");
@@ -41,8 +61,8 @@ function renderAccordionItems(map) {
         let accordionBody = document.createElement("div");
         accordionBody.classList.add("accordion-body");
 
-        let orderedList = document.createElement("ul");
-        orderedList.classList.add("list-group");
+        let unorderedList = document.createElement("ul");
+        unorderedList.classList.add("list-group");
 
         value.forEach((student, index) => {
             let listItem = document.createElement("li");
@@ -54,16 +74,16 @@ function renderAccordionItems(map) {
             btn.setAttribute("data-bs-toggle","offcanvas");
             btn.setAttribute("data-bs-target", "#staticBackdrop");
             btn.setAttribute("aria-controls", "staticBackdrop");
-            btn.setAttribute("data-studentId", `${student._id}`);
-
+            btn.setAttribute("data-studentid", `${student._id}`);
             btn.textContent = `${index+1}. ${student.name}`;
 
-            listItem.appendChild(btn);
+            renderStudent(btn);
 
-            orderedList.appendChild(listItem);
+            listItem.appendChild(btn);
+            unorderedList.appendChild(listItem);
         });
 
-        accordionBody.appendChild(orderedList);
+        accordionBody.appendChild(unorderedList);
         accordionShowContainer.appendChild(accordionBody);
         accordionItem.appendChild(accordionShowContainer);
 
@@ -71,7 +91,6 @@ function renderAccordionItems(map) {
 
         index++;
     }
-
 }
 
 export default renderAccordionItems;

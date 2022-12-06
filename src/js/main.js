@@ -6,10 +6,12 @@ import * as bootstrap from 'bootstrap';
 // Import our custom JS
 import getData from "./getData.js";
 
-import { fetchStudents, addNewStudent, deleteStudent, getSingleStudent } from './data.js';
+import { fetchStudents, addNewStudent, deleteStudent, getSingleStudent, putStudent } from './data.js';
 import renderAccordionItems from "./renderAccordionItems.js";
-import renderStudent from "./renderStudentDetails.js";
+import { renderStudent, renderStudentDetails} from "./renderStudentDetails.js";
 /* -------------------------------------------------------------------------------  */
+
+const myModalAlternative = new bootstrap.Modal('#modal-formular')
 
 
 
@@ -21,14 +23,12 @@ console.log(elStudentDetailView); */
 let form = document.querySelector("#student-form"); 
 
 
-//// fire rendering
-//fetching data fom API
-let dataSet = await fetchStudents();
-let schoolMap = await getData(dataSet.students);
-console.log(schoolMap);
-renderAccordionItems(schoolMap);
-let elStudentDetailView = document.querySelectorAll(".student-detail-btn");
-renderStudent(elStudentDetailView);
+
+await renderAccordionItems();
+
+
+//let elStudentDetailView = document.querySelectorAll(".student-detail-btn");
+// renderStudent(allDetailBtn);
 
 
 //? --------TEST-SECTION---------
@@ -49,8 +49,24 @@ renderStudent(elStudentDetailView);
 
 form.addEventListener("submit", async (evt) => {
 
-    console.log(form);
+    let schoolDataResponse;
+    let data = getStudentData(evt);
 
+    if (form.dataset.purpose === "edit") {
+        let studentId = form.dataset.studentId;
+        schoolDataResponse = await putStudent(data, studentId);
+        renderStudentDetails(studentId)
+    } else {
+        schoolDataResponse = await addNewStudent(data);
+    }
+
+    let schoolMap = await getData(schoolDataResponse);
+    renderAccordionItems(schoolMap);
+    myModalAlternative.hide();
+
+});
+
+function getStudentData(evt) {
     let data = {
         address: {
         street: "",
@@ -61,16 +77,41 @@ form.addEventListener("submit", async (evt) => {
         name: "",
         classId: "",                               
     }
-    
+
     let firstName = document.querySelector("#validationFirstName")
     let surName = document.querySelector("#validationLastName")
-    data.name = `${firstName.value} ${surName.value}`;
+    let studentName = `${firstName.value} ${surName.value}`;
+    if (studentName.length > 2) {
+        console.log(studentName);
+        evt.target.classList.remove("is-invalid");
+        evt.target.classList.add("is-valid");
+        data.name = studentName;
+    } else {
+        evt.target.classList.remove("is-valid");
+        evt.target.classList.add("is-invalid");
+    }
 
     let id = document.querySelector("#validationServerClassname");
-    data.classId = id.value;
+    let classId = id.value;
+    if (classId.length > 2) {
+        evt.target.classList.remove("is-invalid");
+        evt.target.classList.add("is-valid");
+        data.classId = classId;
+    } else {
+        evt.target.classList.remove("is-valid");
+        evt.target.classList.add("is-invalid");
+    }
 
     let streetName = document.querySelector("#validationServerStreetName");
-    data.address.street = streetName.value;
+    let street = streetName.value;
+    if (classId.length > 2) {
+        evt.target.classList.remove("is-invalid");
+        evt.target.classList.add("is-valid");
+        data.address.street = street;
+    } else {
+        evt.target.classList.remove("is-valid");
+        evt.target.classList.add("is-invalid");
+    }
 
     let streetNumber = document.querySelector("#validationServerStreetNumber");
     data.address.streetNum = streetNumber.value;
@@ -81,30 +122,10 @@ form.addEventListener("submit", async (evt) => {
     let zipCode = document.querySelector("#validationServerZipCode");
     data.address.postalCode = zipCode.value;
 
-
-    let schoolDataResponse = await addNewStudent(data);
-
-    console.log("schoolDataResponse   ",schoolDataResponse);
-    
-    let schoolMap = await getData(schoolDataResponse);
-    renderAccordionItems(schoolMap)
+    return data;
+}
 
 
-
-
-
-});
-
-//? Klassennamen werden dem Formular hinzugefügt
-document.querySelector("#add-new-student-btn").addEventListener("click", async () => {
-    let classNames = Array.from(schoolMap.keys())
-    let dataList = document.querySelector("#datalistOptions");
-    classNames.forEach(className => {
-        let option = document.createElement("option");
-        option.value = className;
-        dataList.appendChild(option);
-    });
-});
 
 
 
